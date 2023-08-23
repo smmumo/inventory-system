@@ -38,15 +38,16 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CreateCustomerDTO customerDTO) {
-        Optional<Customer> existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
-        if(existingCustomer.isPresent()){
+       // Optional<Customer> existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
+       var exist = customerRepository.selectExistsEmail(customerDTO.getEmail());
+        if(exist){
             throw new CustomerAlreadyExistsException("Customer of Email [%s] Already Exist".formatted(customerDTO.getEmail()));
         }else{
-            Customer customer = new Customer();
-            customer.setEmail(customerDTO.getEmail());
-            customer.setPhone(customerDTO.getPhone());
-            customer.setFirstName(customerDTO.getFirstName());
-            customer.setLastName(customerDTO.getLastName());
+            Customer customer = customerDTO.toCustomer(); // new Customer();
+//            customer.setEmail(customerDTO.getEmail());
+//            customer.setPhone(customerDTO.getPhone());
+//            customer.setFirstName(customerDTO.getFirstName());
+//            customer.setLastName(customerDTO.getLastName());
             return customerRepository.save(customer);
         }
 
@@ -67,9 +68,9 @@ public class CustomerService {
     }
 
     public void deleteCustomer(long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if(customer.isEmpty()){
-            throw new RuntimeException("Customer Not Found");
+       boolean exists = customerRepository.existsById(id);
+        if(!exists){
+            throw new NoSuchCustomerExistsException("Customer Not Found");
         }
         customerRepository.deleteById(id);
     }

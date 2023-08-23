@@ -104,7 +104,6 @@ class CustomerControllerTest {
                 .content(asJsonString(customerDTO)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
     }
     @Test
     void deleteCustomerTest() throws Exception{
