@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class ErrorResponse {
     private int statusCode;
     private  String message;
     public ErrorResponse(String msg){
         super();
         this.message = msg;
+    }
+
+    public ErrorResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
     }
 }
